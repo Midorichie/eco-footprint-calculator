@@ -1,21 +1,72 @@
 [project]
-name = "file"
-description = ""
-authors = []
-telemetry = true
-cache_dir = "./.cache"
+name = "eco-footprint-calculator"
+version = "2.0.0"
+description = "Enhanced carbon footprint tracking and offset system"
+authors = ["midorichie"]
+license = "MIT"
+keywords = ["carbon", "footprint", "environment", "sustainability", "offset"]
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
+[contracts.eco-footprint]
+path = "contracts/eco-footprint.clar"
+depends_on = []
+
+[contracts.carbon-offset]
+path = "contracts/carbon-offset.clar"
+depends_on = []
+
+[repl]
+costs = true
+parser = "2"
 
 [repl.analysis]
 passes = ["check_checker"]
-check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
 
-# Check-checker settings:
-# trusted_sender: if true, inputs are trusted after tx_sender has been checked.
-# trusted_caller: if true, inputs are trusted after contract-caller has been checked.
-# callee_filter: if true, untrusted data may be passed into a private function without a
-# warning, if it gets checked inside. This check will also propagate up to the
-# caller.
-# More informations: https://www.hiro.so/blog/new-safety-checks-in-clarinet
+# Network configurations
+[network]
+name = "mocknet"
+
+[network.mocknet]
+stacks_node_rpc_address = "http://localhost:20443"
+stacks_node_p2p_address = "localhost:20444"
+bitcoin_node_rpc_address = "http://localhost:18443"
+bitcoin_node_p2p_address = "localhost:18444"
+bitcoin_node_username = "bitcoin"
+bitcoin_node_password = "bitcoin"
+miner_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"
+miner_derivation_path = "m/44'/5757'/0'/0/0"
+
+[network.testnet]
+stacks_node_rpc_address = "https://stacks-node-api.testnet.stacks.co"
+bitcoin_node_rpc_address = "https://blockstream.info/testnet/api"
+
+[network.mainnet]
+stacks_node_rpc_address = "https://stacks-node-api.mainnet.stacks.co"
+bitcoin_node_rpc_address = "https://blockstream.info/api"
+
+# Test accounts for development
+[[network.mocknet.accounts]]
+name = "deployer"
+mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"
+balance = "100000000000000"
+derivation_path = "m/44'/5757'/0'/0/0"
+
+[[network.mocknet.accounts]]
+name = "wallet_1"
+mnemonic = "point approve language letter cargo rough similar wrap focus edge polar task olympic tobacco cinnamon drop lawn boring sort trade senior grocery bird ability"
+balance = "100000000000000"
+derivation_path = "m/44'/5757'/0'/0/1"
+
+[[network.mocknet.accounts]]
+name = "wallet_2"
+mnemonic = "faculty tower brand public guilt dutch rhythm scatter envelope type thank wealth lift captain else pride firm attitude wrist abandon pave bamboo wrist abandon"
+balance = "100000000000000"
+derivation_path = "m/44'/5757'/0'/0/2"
+
+# Deployment configuration
+[deployment]
+network = "mocknet"
+manual_confirmation = false
+
+[deployment.contracts]
+eco-footprint = "contracts/eco-footprint.clar"
+carbon-offset = "contracts/carbon-offset.clar"
